@@ -1,0 +1,31 @@
+name: Generate QA Report 
+on: 
+  push: 
+    branches: 
+      - main  # Zmień na nazwę swojej głównej gałęzi, jeśli jest inna 
+ 
+jobs: 
+  generate_report: 
+    runs-on: ubuntu-latest 
+ 
+    steps: 
+      - name: Checkout repository 
+        uses: actions/checkout@v3 
+        with: 
+          fetch-depth: 2  # Potrzebne do porównania z poprzednim 
+committem 
+ 
+      - name: Set up Python 
+        uses: actions/setup-python@v4 
+        with: 
+          python-version: '3.x' 
+ 
+      - name: Install dependencies 
+        run: | 
+          pip install openai 
+ 
+      - name: Generate QA Report 
+        env: 
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} 
+        run: | 
+          python generate_qa_report.py 
