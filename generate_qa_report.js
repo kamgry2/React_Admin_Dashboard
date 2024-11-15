@@ -153,17 +153,23 @@ const getDifficultyLevel = async (qaReportContent) => {
 async function getImagePromptforCurrentDifficulty(difficultyLevel) {
     let prompt;
     if (difficultyLevel === 1) {
-        prompt = "Śmieszny obrazek królika testującego prostą aplikację frontendową";
+        prompt = "Śmieszny obrazek leniwca lub innego powolnego zwierzaka który jest programistą, " +
+            "zasypia w trakcie pracy lub pije kawę będąc zrelaksowanym";
     } else if (difficultyLevel === 2) {
-        prompt = "Lis programista debugujący zawiłości interfejsu użytkownika";
+        prompt = "Śmieszny zwierzak (kot, pies, lis lub podobny) w okularach debugujący zawiłości interfejsu użytkownika " +
+            "z komicznym wyrazem twarzy i jest skupiony na pracy";
     } else if (difficultyLevel === 3) {
-        prompt = "Grupa pingwinów próbujących naprawić skomplikowany błąd w aplikacji webowej";
+        prompt = "Grupa zwierzaków pracowicie naprawiających ogromny stos błędów w aplikacji webowej " +
+            "(śmieszny i pokazujący, że jest dużo pracy), rysunek ma być zabawny";
     } else if (difficultyLevel === 4) {
-        prompt = "Sowa w okularach intensywnie testująca zaawansowany frontend";
+        prompt = "Przerażający, ale śmieszny obrazek zwierzaka żubra, tygrysa, lub innego duże zwierzęcia programisty otoczonego przez płonące serwery i " +
+            "nieskończone linie błędów (śmieszny i przerażający jednocześnie, pokazujący powagę sytuacji).";
     } else {
         prompt = "Zwierzęta jako programiści pracujący nad aplikacją";
     }
-    console.log(prompt)
+
+    console.log(`Your prompt based on difficultyLevel = ${difficultyLevel}: ${prompt}`);
+
     prompt += "; ma być bez znaków specjalnych, tylko opis, może zawierać postać lub postacie zwierzaków jako programistów. Całkowita długość promptu ma nie przekraczać 400 znaków i być bardzo prosty bez żadnych dodatkowych textów, tylko sam obrazek";
 
     console.log("## Step : Generating custom image prompt based on changes difficulty level ...");
