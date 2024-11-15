@@ -44,6 +44,7 @@ const generateAIImage = async (imagePrompt) => {
             prompt: imagePrompt,
             n: 1,
             size: '1024x1024',
+            model: 'dall-e-3'
         });
         const imageUrl = response.data.data[0].url; // Odczytaj dane z poprawnej struktury odpowiedzi
         return imageUrl;
@@ -162,6 +163,7 @@ async function getImagePromptforCurrentDifficulty(difficultyLevel) {
     } else {
         prompt = "Zwierzęta jako programiści pracujący nad aplikacją";
     }
+    console.log(prompt)
     prompt += "; ma być bez znaków specjalnych, tylko opis, może zawierać postać lub postacie zwierzaków jako programistów. Całkowita długość promptu ma nie przekraczać 400 znaków i być bardzo prosty bez żadnych dodatkowych textów, tylko sam obrazek";
 
     console.log("## Step : Generating custom image prompt based on changes difficulty level ...");
