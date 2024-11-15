@@ -39,7 +39,7 @@ const getGPTResponse = async (request) => {
 
 const generateAIImage = async (imagePrompt) => {
     try {
-        console.log("## Step : Initial image generating with Dall-e ...");
+        console.log("## Step : Initial image generating with Dall-e...");
         const response = await openai.createImage({
             prompt: imagePrompt,
             n: 1,
