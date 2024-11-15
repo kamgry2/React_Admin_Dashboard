@@ -38,7 +38,7 @@ const Users = () => {
               className="delete_btn"
               onClick={() => handleDelete(params.row.id)}
             >
-              Remove User
+              Delete
             </div>
           </div>
         );
