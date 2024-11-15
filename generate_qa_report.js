@@ -1,6 +1,6 @@
 const { WebClient } = require('@slack/web-api');
 const { execSync } = require('child_process');
-const { OpenAI } = require('openai');
+const { Configuration, OpenAIApi } = require('openai');
 const axios = require('axios');
 const sharp = require('sharp');
 
@@ -14,11 +14,12 @@ if (!openAIKey || !token || !channelId) {
     process.exit(1);
 }
 
-const openai = new OpenAI({
+const configuration = new Configuration({
     apiKey: openAIKey,
 });
 
 const webSlackClient = new WebClient(token);
+const openai = new OpenAIApi(configuration);
 
 const getGPTResponse = async (request) => {
     try {
