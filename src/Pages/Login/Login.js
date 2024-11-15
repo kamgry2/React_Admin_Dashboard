@@ -131,6 +131,7 @@ const Login = (props) => {
                     selectedRandomAdmin.substring(1)
                   : ""
               }`}
+              required
             />
           </div>
           <div className="password_container">
