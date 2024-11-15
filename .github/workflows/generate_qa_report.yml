@@ -26,5 +26,5 @@ jobs:
       - name: Generate QA Report
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_API_TOKEN }}
         run: node generate_qa_report.js
