@@ -4,10 +4,15 @@ const { OpenAI } = require('openai');
 const axios = require('axios');
 const sharp = require('sharp');
 
-// Konfiguracja za pomocą zmiennych środowiskowych
 const openAIKey = process.env.OPENAI_API_KEY;
 const token = process.env.SLACK_API_TOKEN;
 const channelId = process.env.SLACK_CHANNEL_ID;
+
+
+if (!openAIKey || !token || !channelId) {
+    console.error("Error: Missing required environment variables.");
+    process.exit(1);
+}
 
 const openai = new OpenAI({
     apiKey: openAIKey,
