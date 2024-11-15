@@ -23,16 +23,17 @@ const openai = new OpenAIApi(configuration);
 
 const getGPTResponse = async (request) => {
     try {
-        const response = await openai.chat.completions.create({
+        const response = await openai.createChatCompletion({
             model: 'gpt-4',
             messages: [
                 { role: 'system', content: 'Jesteś pomocnym asystentem.' },
                 { role: 'user', content: request },
             ],
         });
-        return response.choices[0].message.content;
+        return response.data.choices[0].message.content;
     } catch (error) {
-        console.error(error);
+        console.error('Error in getGPTResponse:', error.response?.data || error.message);
+        return null;
     }
 };
 
@@ -124,11 +125,11 @@ Give me answer in english.
     return prompt;
 }
 
-async function getDifficultyLevel(qaReportContent) {
+const getDifficultyLevel = async (qaReportContent) => {
     try {
         console.log("## Step: Detecting changes risk level based on QA report ...");
 
-        const response = await openai.chat.completions.create({
+        const response = await openai.createChatCompletion({
             model: 'gpt-4',
             messages: [
                 { role: 'system', content: 'Jesteś QA team leadem.' },
@@ -142,11 +143,12 @@ async function getDifficultyLevel(qaReportContent) {
                 },
             ],
         });
-        return response.choices[0].message.content;
+        return response.data.choices[0].message.content.trim(); // Używaj response.data
     } catch (error) {
-        console.error(error);
+        console.error('Error in getDifficultyLevel:', error.response?.data || error.message);
+        return null; // Zwróć null w przypadku błędu
     }
-}
+};
 
 async function getImagePromptforCurrentDifficulty(difficultyLevel) {
     let prompt;
@@ -180,18 +182,31 @@ async function getImagePromptforCurrentDifficulty(difficultyLevel) {
     const prompt = preparePrompt(fileDiffs);
     const qaReport2 = await getGPTResponse(prompt);
 
+    if (!qaReport2) {
+        console.error("Failed to generate QA report. Exiting.");
+        return;
+    }
+
     const difficultyLevel = await getDifficultyLevel(qaReport2);
+
+    if (!difficultyLevel) {
+        console.error("Failed to determine difficulty level. Exiting.");
+        return;
+    }
 
     const imagePrompt = await getImagePromptforCurrentDifficulty(Number(difficultyLevel.trim()));
 
-    if (imagePrompt && qaReport2) {
-        try {
-            const imageUrl = await generateAIImage(imagePrompt);
-            if (imageUrl) {
-                await sendImageToSlack(imageUrl, qaReport2);
-            }
-        } catch (error) {
-            console.error('Error in generateAndSendImage:', error);
+    if (!imagePrompt) {
+        console.error("Failed to generate image prompt. Exiting.");
+        return;
+    }
+
+    try {
+        const imageUrl = await generateAIImage(imagePrompt);
+        if (imageUrl) {
+            await sendImageToSlack(imageUrl, qaReport2);
         }
+    } catch (error) {
+        console.error('Error in generateAndSendImage:', error);
     }
 })();
